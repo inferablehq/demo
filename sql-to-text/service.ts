@@ -12,7 +12,7 @@ const client = new Inferable({
 });
 
 const service = client.service({
-  name: "sql-to-text",
+  name: "userDB",
 });
 
 service.register({

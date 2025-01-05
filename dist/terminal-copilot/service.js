@@ -7,7 +7,7 @@ const client = new Inferable({
     apiSecret: process.env.INFERABLE_API_SECRET,
 });
 const service = client.service({
-    name: "terminal-copilot",
+    name: "terminal",
 });
 service.register({
     name: "executeCommand",

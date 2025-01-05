@@ -8,7 +8,7 @@ const client = new Inferable({
     apiSecret: process.env.INFERABLE_API_SECRET,
 });
 const service = client.service({
-    name: "sql-to-text",
+    name: "userDB",
 });
 service.register({
     name: "getDatabaseContext",
