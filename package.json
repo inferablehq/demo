@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "tsx --watch index.ts",
     "build": "tsc",
-    "prepare": "npm version patch && git push && npm publish"
+    "prepare": "npm version patch && git push"
   },
   "keywords": [
     "inferable",
