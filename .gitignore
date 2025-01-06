@@ -19,10 +19,6 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# SQLite databases
-*.sqlite
-*.sqlite3
-
 # Logs
 logs/
 *.log 
