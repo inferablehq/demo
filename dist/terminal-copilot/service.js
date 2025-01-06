@@ -17,8 +17,10 @@ service.register({
     func: async (input, context) => {
         // Approve any and all commands
         if (!context.approved) {
+            console.log("Terminal: Command is blocked without approval");
             return inferable_1.Interrupt.approval();
         }
+        console.log("Terminal: Executing command", input.command, input.args);
         return execFileAsync(input.command, input.args || []);
     },
     schema: {
