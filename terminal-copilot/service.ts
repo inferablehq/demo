@@ -2,11 +2,12 @@ import { execFile } from "child_process";
 import { Inferable, Interrupt } from "inferable";
 import { promisify } from "util";
 import { z } from "zod";
+import { apiSecret } from "../secret";
 
 const execFileAsync = promisify(execFile);
 
 const client = new Inferable({
-  apiSecret: process.env.INFERABLE_API_SECRET,
+  apiSecret,
 });
 
 const service = client.service({
@@ -42,4 +43,4 @@ service.register({
   },
 });
 
-service.start();
+export default service;

@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-process.env.INFERABLE_API_SECRET = process.argv
-  .find((arg) => arg.startsWith("--secret="))
-  ?.split("=")[1];
+import sqlToTextService from "./sql-to-text/service";
+import terminalCopilotService from "./terminal-copilot/service";
 
-Promise.all([
-  import("./sql-to-text/service.js"),
-  import("./terminal-copilot/service.js"),
-]);
+Promise.all([sqlToTextService.start(), terminalCopilotService.start()]).then(
+  () => {
+    console.log("🚀 Services started!");
+  }
+);
 
 process.on("unhandledRejection", (reason, promise) => {
   console.error("Unhandled Rejection at:", promise, "reason:", reason);

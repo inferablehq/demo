@@ -1,24 +1,31 @@
 import { Inferable } from "inferable";
-
-import sqlite3 from "sqlite3";
-import { promisify } from "util";
+import Database from "better-sqlite3";
+import path from "path";
+import { apiSecret } from "../secret";
 import { z } from "zod";
 
-const db = new sqlite3.Database("database.sqlite");
-const run = promisify(db.run.bind(db));
+const db = new Database(path.resolve(process.cwd(), "database.sqlite"));
 
 const client = new Inferable({
-  apiSecret: process.env.INFERABLE_API_SECRET,
+  apiSecret,
 });
 
 const service = client.service({
-  name: "userDB",
+  name: "sqlite",
 });
 
 service.register({
   name: "getDatabaseContext",
   func: async () => {
-    return run(`SELECT * FROM sqlite_schema`);
+    // better-sqlite3 provides direct access to database information
+    return {
+      tables: db
+        .prepare("SELECT name FROM sqlite_master WHERE type='table'")
+        .all(),
+      schema: db
+        .prepare("SELECT sql FROM sqlite_master WHERE type='table'")
+        .all(),
+    };
   },
   schema: {
     input: z.object({}),
@@ -28,7 +35,7 @@ service.register({
 service.register({
   name: "executeSql",
   func: async (input: { sql: string }) => {
-    return run(input.sql);
+    return db.prepare(input.sql).all();
   },
   schema: {
     input: z.object({
@@ -37,4 +44,4 @@ service.register({
   },
 });
 
-service.start();
+export default service;
