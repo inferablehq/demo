@@ -4,7 +4,7 @@ import path from "path";
 import { apiSecret } from "../secret";
 import { z } from "zod";
 
-const db = new Database(path.resolve(process.cwd(), "database.sqlite"));
+const db = new Database(path.resolve(__dirname, "../database.sqlite"));
 
 const client = new Inferable({
   apiSecret,

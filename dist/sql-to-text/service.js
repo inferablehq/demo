@@ -8,7 +8,7 @@ const better_sqlite3_1 = __importDefault(require("better-sqlite3"));
 const path_1 = __importDefault(require("path"));
 const secret_1 = require("../secret");
 const zod_1 = require("zod");
-const db = new better_sqlite3_1.default(path_1.default.resolve(process.cwd(), "database.sqlite"));
+const db = new better_sqlite3_1.default(path_1.default.resolve(__dirname, "../database.sqlite"));
 const client = new inferable_1.Inferable({
     apiSecret: secret_1.apiSecret,
 });
