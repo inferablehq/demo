@@ -1,11 +1,13 @@
-import { execFile } from "child_process";
-import { Inferable, Interrupt } from "inferable";
-import { promisify } from "util";
-import { z } from "zod";
-import { apiSecret } from "../secret";
-const execFileAsync = promisify(execFile);
-const client = new Inferable({
-    apiSecret,
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const child_process_1 = require("child_process");
+const inferable_1 = require("inferable");
+const util_1 = require("util");
+const zod_1 = require("zod");
+const secret_1 = require("../secret");
+const execFileAsync = (0, util_1.promisify)(child_process_1.execFile);
+const client = new inferable_1.Inferable({
+    apiSecret: secret_1.apiSecret,
 });
 const service = client.service({
     name: "terminal",
@@ -15,13 +17,13 @@ service.register({
     func: async (input, context) => {
         // Approve any and all commands
         if (!context.approved) {
-            return Interrupt.approval();
+            return inferable_1.Interrupt.approval();
         }
         return execFileAsync(input.command, input.args || []);
     },
     schema: {
-        input: z.object({
-            command: z.enum([
+        input: zod_1.z.object({
+            command: zod_1.z.enum([
                 "whoami",
                 "uname",
                 "hostname",
@@ -33,8 +35,8 @@ service.register({
                 "top",
                 "ps",
             ]),
-            args: z.array(z.string()).optional(),
+            args: zod_1.z.array(zod_1.z.string()).optional(),
         }),
     },
 });
-export default service;
+exports.default = service;

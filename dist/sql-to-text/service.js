@@ -1,11 +1,16 @@
-import { Inferable } from "inferable";
-import Database from "better-sqlite3";
-import path from "path";
-import { apiSecret } from "../secret";
-import { z } from "zod";
-const db = new Database(path.resolve(process.cwd(), "database.sqlite"));
-const client = new Inferable({
-    apiSecret,
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const inferable_1 = require("inferable");
+const better_sqlite3_1 = __importDefault(require("better-sqlite3"));
+const path_1 = __importDefault(require("path"));
+const secret_1 = require("../secret");
+const zod_1 = require("zod");
+const db = new better_sqlite3_1.default(path_1.default.resolve(process.cwd(), "database.sqlite"));
+const client = new inferable_1.Inferable({
+    apiSecret: secret_1.apiSecret,
 });
 const service = client.service({
     name: "sqlite",
@@ -24,7 +29,7 @@ service.register({
         };
     },
     schema: {
-        input: z.object({}),
+        input: zod_1.z.object({}),
     },
 });
 service.register({
@@ -33,9 +38,9 @@ service.register({
         return db.prepare(input.sql).all();
     },
     schema: {
-        input: z.object({
-            sql: z.string(),
+        input: zod_1.z.object({
+            sql: zod_1.z.string(),
         }),
     },
 });
-export default service;
+exports.default = service;
