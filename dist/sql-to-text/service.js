@@ -4,11 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const inferable_1 = require("inferable");
-const better_sqlite3_1 = __importDefault(require("better-sqlite3"));
-const path_1 = __importDefault(require("path"));
-const secret_1 = require("../secret");
 const zod_1 = require("zod");
-const db = new better_sqlite3_1.default(path_1.default.resolve(__dirname, "../database.sqlite"));
+const secret_1 = require("../secret");
+const seed_1 = __importDefault(require("./seed"));
 const client = new inferable_1.Inferable({
     apiSecret: secret_1.apiSecret,
 });
@@ -20,10 +18,10 @@ service.register({
     func: async () => {
         console.log("SQLite: Getting database context");
         return {
-            tables: db
+            tables: seed_1.default
                 .prepare("SELECT name FROM sqlite_master WHERE type='table'")
                 .all(),
-            schema: db
+            schema: seed_1.default
                 .prepare("SELECT sql FROM sqlite_master WHERE type='table'")
                 .all(),
         };
@@ -36,7 +34,7 @@ service.register({
     name: "executeSql",
     func: async (input) => {
         console.log("SQLite: Executing SQL", input.sql);
-        return db.prepare(input.sql).all();
+        return seed_1.default.prepare(input.sql).all();
     },
     schema: {
         input: zod_1.z.object({

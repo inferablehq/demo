@@ -36,9 +36,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "files": [
-    "dist",
-    "database.sqlite"
-  ]
+  }
 }

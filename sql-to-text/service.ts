@@ -1,10 +1,7 @@
 import { Inferable } from "inferable";
-import Database from "better-sqlite3";
-import path from "path";
-import { apiSecret } from "../secret";
 import { z } from "zod";
-
-const db = new Database(path.resolve(__dirname, "../database.sqlite"));
+import { apiSecret } from "../secret";
+import db from "./seed";
 
 const client = new Inferable({
   apiSecret,
