@@ -17,7 +17,8 @@ const service = client.service({
 service.register({
   name: "getDatabaseContext",
   func: async () => {
-    // better-sqlite3 provides direct access to database information
+    console.log("SQLite: Getting database context");
+
     return {
       tables: db
         .prepare("SELECT name FROM sqlite_master WHERE type='table'")
@@ -35,6 +36,8 @@ service.register({
 service.register({
   name: "executeSql",
   func: async (input: { sql: string }) => {
+    console.log("SQLite: Executing SQL", input.sql);
+
     return db.prepare(input.sql).all();
   },
   schema: {
