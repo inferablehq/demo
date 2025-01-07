@@ -34,7 +34,15 @@ service.register({
     name: "executeSql",
     func: async (input) => {
         console.log("SQLite: Executing SQL", input.sql);
-        return seed_1.default.prepare(input.sql).all();
+        const mutation = input.sql.includes("UPDATE") ||
+            input.sql.includes("INSERT") ||
+            input.sql.includes("DELETE");
+        if (mutation) {
+            return seed_1.default.prepare(input.sql).run();
+        }
+        else {
+            return seed_1.default.prepare(input.sql).all();
+        }
     },
     schema: {
         input: zod_1.z.object({
